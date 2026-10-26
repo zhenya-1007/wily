@@ -56,7 +56,7 @@ builtin_autoindent(View *v, char *arg) {
 	each go 'all the way'. 
 *****************************************************/
 static void
-undo_ops(View *v, char*arg, Range (*undofn)(Text*, Bool))
+undo_ops(View *v, char*arg, Range (*undofn)(Text*, bool))
 {
 	Range	r;
 
@@ -252,7 +252,7 @@ cmd_compare(Cmd *a,Cmd *b)
  * PRE: 'v' is the context, 'cmd' the command.
  * POST: return true if we recognise the builtin, false otherwise.
  */
-Bool
+bool
 builtin(View *v, char *cmd, char *arg)
 {
 	Cmd	key, *c;
@@ -267,5 +267,5 @@ builtin(View *v, char *cmd, char *arg)
 
 	if (c) 
 		(*c->cmd)(v, arg);
-	return (Bool) c;
+	return (bool) c;
 }

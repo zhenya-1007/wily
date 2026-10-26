@@ -8,8 +8,8 @@
 enum {TSIZE=401};
 static Tile* placetable[TSIZE];	/* hashed array of column tiles */
 
-static Bool		iserror(char*label);
-static Bool		validcolumn(Tile*c);
+static bool		iserror(char*label);
+static bool		validcolumn(Tile*c);
 static unsigned long	hashpath(char *path);
 static Tile *			find(char *label);
 
@@ -45,7 +45,7 @@ findcol(char*label) {
 	static functions
 ******************************************************/
 
-static Bool
+static bool
 iserror(char*label) {
 	static char *errors = "+Errors";
 	int	elen = strlen(errors);
@@ -55,7 +55,7 @@ iserror(char*label) {
 }
 
 /* Is 'c' still a valid pointer for a visible column? */
-static Bool
+static bool
 validcolumn(Tile*c)
 {
 	return list_contains(wily->down, 0, c);

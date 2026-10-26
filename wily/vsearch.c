@@ -6,12 +6,12 @@
 #include "view.h"
 #include <errno.h>
 
-static Bool	view_literal(View**vp, Range*r, char*s);
-static Bool	view_gotofile(View**vp, Range *r, char *s);
+static bool	view_literal(View**vp, Range*r, char*s);
+static bool	view_gotofile(View**vp, Range *r, char *s);
 
 /* If 'label' is the label of some existing file, return View for it. */
 View*
-openlabel(char*label, Bool create) {
+openlabel(char*label, bool create) {
 	View*v;
 	Path	contracted;
 	
@@ -29,7 +29,7 @@ openlabel(char*label, Bool create) {
 /* Look (builtin) for 'arg' in the context of 'v' */
 void
 view_look (View *v, char *arg) {
-	Bool		found = false;
+	bool		found = false;
 	ulong	p;
 	Range	r;
 
@@ -67,7 +67,7 @@ view_look (View *v, char *arg) {
  *
  * NB modifies 's'
  */
-Bool
+bool
 view_goto(View**vp, Range *r, char *s) {
 	return view_gotofile(vp,r,s) || view_literal(vp, r,s);
 }
@@ -124,7 +124,7 @@ cleanup:
  * If we find a match, update 'vp' and 'r' and return true,
  * otherwise, return false.
  */
-static Bool
+static bool
 view_literal(View**vp, Range*r, char*s) {
 	View*v;
 	Text	*t;
@@ -159,7 +159,7 @@ view_literal(View**vp, Range*r, char*s) {
  *
  * 's' may be of the form path:addr, or path, or :addr.
  */
-static Bool
+static bool
 view_gotofile(View**vp, Range *r, char *a) {
 	Path	s;
 	View	*v = *vp;

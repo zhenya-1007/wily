@@ -35,7 +35,7 @@ text_length(Text*t) {
 	return t->length;
 }
 
-Bool
+bool
 text_needsbackup(Text*t) {
 	return t->needsbackup;
 }
@@ -63,11 +63,11 @@ text_body(Text*t) {
 ****************************************************/
 
 void
-text_setneedsbackup(Text*t, Bool b) {
+text_setneedsbackup(Text*t, bool b) {
 	t->needsbackup = b;
 }
 
-Bool
+bool
 text_badrange(Text *t, Range r) {
 	return r.p1 > t->length || r.p0 > r.p1;
 }
@@ -350,7 +350,7 @@ text_getdir(Text *t, char**names) {
 * If 't' represents a directory, and doesn't have any modified text,
 * reformat the directory and return true.  Otherwise return false.
 */
-Bool
+bool
 text_refreshdir(Text*t)
 {
 	char**names;

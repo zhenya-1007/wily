@@ -8,7 +8,7 @@ void	error(char *, ...);
 void fatal(char*,...);
 
 /* builtins.c */
-Bool	builtin			(View *, char *, char*);
+bool	builtin			(View *, char *, char*);
 
 /* click.c */
 Range	text_doubleclick	(Text *, ulong);
@@ -24,7 +24,7 @@ void		col_del		(Tile*);
 Text*	data_body	(Data*);
 Text*	data_tag		(Data*);
 char**	data_names	(Data*d);
-Bool		data_isdirty	(Data *d);
+bool		data_isdirty	(Data *d);
 int		data_putall	(void);
 int		data_backupall (void);
 int		data_put		(Data *d, char *path);
@@ -48,7 +48,7 @@ void		ex_init			(void);
 void		run				(View *, char *, char *);
 
 /* file.c */
-View *	data_open		(char*, Bool);
+View *	data_open		(char*, bool);
 int		data_get			(Data *d, char *);
 
 /* include.c */
@@ -56,8 +56,8 @@ View*	openinclude		(View *v, Range r);
 
 /* keyboard.c */
 void		dokeyboard		(View *, Rune);
-void		view_pagedown	(View *, Bool );
-void		view_linesdown	(View *v, int n, Bool down);
+void		view_pagedown	(View *, bool );
+void		view_linesdown	(View *v, int n, bool down);
 
 /* label.c */
 void		data_addcontext	(Data*, char*, char*);
@@ -67,7 +67,7 @@ View *	data_find			(char*);
 
 /* line.c */
 int		text_linenumber	(Text *t, ulong );
-Bool		text_findline		(Text *, Range *, ulong);
+bool		text_findline		(Text *, Range *, ulong);
 Range	text_lastline		(Text *);
 ulong	text_nl			(Text *, ulong, int);
 ulong	text_startOfLine	(Text *, ulong);
@@ -79,16 +79,16 @@ void		domouse			(View*, Mouse*);
 void		mbuf_init		(Mbuf*);
 void		mbuf_clear		(Mbuf*);
 int		partialmsg		(Mbuf *, int , int , char*);
-Bool		data_sendreplace	(Data *,Range r, Rstring );
-Bool		data_sendgoto		(Data *,Range r, char *);
-Bool		data_sendexec		(Data *,char*, char *);
+bool		data_sendreplace	(Data *,Range r, Rstring );
+bool		data_sendgoto		(Data *,Range r, char *);
+bool		data_sendexec		(Data *,char*, char *);
 void		data_fdstop		(int );
 
 /* path.c */
 void		labelclean			(char*);
 void		label2path		(char*,char*);
 void		envexpand		(char*, char*);
-View*	openlabel			(char*,Bool);
+View*	openlabel			(char*,bool);
 
 /* place.c */
 Tile*		findcol			(char*);
@@ -98,8 +98,8 @@ void		placedcol			(char*, Tile*);
 Point	buttonpos		(Tile*tile);
 
 /* sam.c */
-Bool		text_regexp		(Text *, Rstring , Range*, Bool );
-Bool		text_utfregexp	(Text *, char*, Range*, Bool );
+bool		text_regexp		(Text *, Rstring , Range*, bool );
+bool		text_utfregexp	(Text *, char*, Range*, bool );
 long		Tchars			(Text *, Rune *, ulong, ulong);
 
 /* scroll.c */
@@ -110,12 +110,12 @@ void		scroll_setrects		(Scroll*, Bitmap *, Rectangle);
 void		scroll_set			(Scroll *, ulong , ulong , ulong );
 
 /* search.c */
-Bool		text_look			(Text*, Range*, Range);
-Bool		text_findliteralutf	(Text*, Range*, char*);
-Bool		text_findwordutf	(Text*, Range*, char*);
-Bool		text_findliteral	(Text*, Range*, Rstring);
-Bool		text_findword		(Text*, Range*, Rstring);
-Bool		text_search		(Text*, Range*, char *, Range);
+bool		text_look			(Text*, Range*, Range);
+bool		text_findliteralutf	(Text*, Range*, char*);
+bool		text_findwordutf	(Text*, Range*, char*);
+bool		text_findliteral	(Text*, Range*, Rstring);
+bool		text_findword		(Text*, Range*, Rstring);
+bool		text_search		(Text*, Range*, char *, Range);
 
 /* select.c */
 Range		vselect		(View *, Mouse *);
@@ -139,7 +139,7 @@ char*	tag_match		(char*label);
 int		text_read			(Text *, int fd, int len);
 int		text_write_range	(Text *, Range, int);
 void		text_copy		(Text *, Range, Rune *);
-Text*	text_alloc			(Data *, Bool);
+Text*	text_alloc			(Data *, bool);
 Range	text_replace		(Text *, Range, Rstring);
 void		text_free			(Text *);
 
@@ -149,12 +149,12 @@ void		text_allread 		(Text*t);
 Data*	text_data			(Text*);
 View*	text_view		(Text*t);
 ulong	text_length		(Text*);
-Bool		text_needsbackup	(Text*);
+bool		text_needsbackup	(Text*);
 
 View*	text_body 		(Text*);
 
-void		text_setneedsbackup(Text*t, Bool b);
-Bool		text_badrange		(Text *t, Range r);
+void		text_setneedsbackup(Text*t, bool b);
+bool		text_badrange		(Text *t, Range r);
 void		text_addview		(Text*, View*);
 int		text_rmview		(Text*, View*);
 
@@ -171,11 +171,11 @@ Range	text_replaceutf	(Text*, Range, char*);
 char*	text_duputf		(Text*, Range);
 int		text_copyutf		(Text *, Range, char *);
 
-Bool		text_refreshdir	(Text*t);
+bool		text_refreshdir	(Text*t);
 void		text_formatdir		(Text *t, char**);
 
 /* tile.c */
-Bool		tile_hidden		(Tile*tile);
+bool		tile_hidden		(Tile*tile);
 View*	tile_body			(Tile*tile);
 void		ereshaped		(Rectangle);
 void		tile_del			(Tile *);
@@ -188,27 +188,27 @@ void		wily_init			(void);
 
 /* undo.c */
 void		undo_record		(Text*, Range, Rstring);
-Range	undo_undo		(Text*, Bool);
-Range	undo_redo		(Text*, Bool);
+Range	undo_undo		(Text*, bool);
+Range	undo_redo		(Text*, bool);
 void		undo_free		(Text*);
 void		undo_reset		(Text*);
 void		undo_start		(Text*);
 void		undo_break		(Text*);
 void		undo_mark		(Text*);
-Bool		undo_atmark		(Text*);
+bool		undo_atmark		(Text*);
 
 /* util.c */
 void		dirnametrunc		(char*);
 void		addcontext		(char*, char*, char*);
 void		olabel			(char*out, char*label);
 int		statcmp			(Stat*a, Stat*b);
-Bool		isdir				(char*path);
+bool		isdir				(char*path);
 int		backup_name		(char *orig, char *back);
 char *	columnate		(int, int, Font *, char **);
 void		noutput			(char *context, char *base, int n);
 void		add_slash			(char*);
 int		distance			(Point , Point );
-Bool		frame_isfull		(Frame*);
+bool		frame_isfull		(Frame*);
 void		frgetmouse		(void);
 char*	mybasename		(char*f);
 Range	paste			(Text *, Range);
@@ -238,12 +238,12 @@ int		view_lastlinepos	(View*v);
 int		view_stripwhitespace (View*v);
 
 /* view.c */
-void		view_getdot		(View *v, char*buf, Bool isLine);
+void		view_getdot		(View *v, char*buf, bool isLine);
 void		view_paste		(View*v);
 Range	view_expand		(View *v, Range r, char *s);
-View*	view_new		(Font *, Bool, Text *, Tile *);
+View*	view_new		(Font *, bool, Text *, Tile *);
 int		view_delete		(View *v);
-Bool		view_invariants	(View*v);
+bool		view_invariants	(View*v);
 
 Data*	view_data		(View*);
 View*	view_body		(View*);
@@ -255,9 +255,9 @@ int		view_height		(View*);
 
 void		view_cut			(View*, Range r);
 void		view_append		(View*, char *, int);
-void		view_pipe		(View*, Bool *, char *, int);
+void		view_pipe		(View*, bool *, char *, int);
 void		view_setfont		(View*, char*arg);
-void		view_border		(View*, Bool);
+void		view_border		(View*, bool);
 void		view_select		(View*, Range);
 void		view_warp		(View*, Range);
 void		view_setlastselection(View *v);
@@ -267,12 +267,12 @@ void		viewlist_replace	(View*, Range, Rstring);
 /* vsearch.c */
 void		b3				(View*, Range r);
 void		view_look		(View*, char*);
-Bool		view_goto		(View**, Range *r, char *s);
+bool		view_goto		(View**, Range *r, char *s);
 
 /* vshow.c */
 void		view_show		(View*, Range);
 void		view_scroll		(View *, Mouse *);
-void		view_hscroll		(View*v, Bool left);
+void		view_hscroll		(View*v, bool left);
 
 /* wily.c */
 void		addrunning		(char *cmd);

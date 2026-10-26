@@ -1,4 +1,6 @@
 /* Copyright (c) 1992 AT&T - All rights reserved. */
+#include <stdlib.h>
+#include <unistd.h>
 #include <libc.h>
 #include <libg.h>
 #include <stdio.h>
@@ -85,7 +87,7 @@ static Font *	initfont(char *, 	XFontStruct *, char *);
 static void	reshaped(int, int, int, int);
 static void	gotchar(int);
 static void	gotmouse(Gwinmouse *);
-static int	log2(int);
+static int	logi2(int);
 static void	pixtocolor(Pixel, XColor *);
 static Subfont	*XFontStructtoSubfont(XFontStruct *);
 static Ebuf	*ebread(Esrc *);
@@ -118,13 +120,19 @@ static XrmOptionDescRec optable[] = {
 };
 
 static int
-ioerr(Display *d)
+ioerr_1(Display *d, XErrorEvent *)
 {
 	if(onerr)
 		(*onerr)("ioerr");
 	else
 		exit(1); 
 	return 0;
+}
+
+static int
+ioerr(Display *d)
+{
+  return ioerr_1(d, (XErrorEvent *)0);
 }
 
 void
@@ -174,7 +182,7 @@ xtbinit(Errfunc f, char *class, int *pargc, char **argv, char **fallbacks)
 	XtSetArg(args[n], XtNcomposeMod, &compose);	n++;
 	XtGetValues(widg, args, n);
 	XSetIOErrorHandler(ioerr);
-	XSetErrorHandler(ioerr);
+	XSetErrorHandler(ioerr_1);
 
 	if (compose < 0 || compose > 5) {
 		n = 0;
@@ -188,7 +196,7 @@ xtbinit(Errfunc f, char *class, int *pargc, char **argv, char **fallbacks)
 	pixtocolor(_fgpixel, &_fgcolor);
 	pixtocolor(_bgpixel, &_bgcolor);
 	screen.id = (int) XtWindow(widg);
-	screen.ldepth = log2(depth);
+	screen.ldepth = logi2(depth);
 	screen.flag = SCR;
 	if(_fgpixel != 0)
 		screen.flag |= BL1;
@@ -364,7 +372,7 @@ gottimeout(XtPointer cldata, XtIntervalId *id)
 }
 
 static int
-log2(int n)
+logi2(int n)
 {
 	int i, v;
 
@@ -592,7 +600,7 @@ void
 einit(unsigned long keys)
 {
 	/*
-	 * Make sure Smouse = log2(Emouse) and Skeyboard == log2(Ekeyboard)
+	 * Make sure Smouse = logi2(Emouse) and Skeyboard == logi2(Ekeyboard)
 	 */
 	nsrc = 0;
 	if(keys&Emouse){
@@ -653,7 +661,7 @@ estop(unsigned long key)
 {
 	int s;
 
-	s = log2(key);
+	s = logi2(key);
 	if (!esrc[s].inuse){
 		berror("key not in use");
 	}
@@ -666,7 +674,7 @@ estoptimer(unsigned long key)
 {
 	int	s;
 
-	s = log2(key);
+	s = logi2(key);
 	if (!esrc[s].inuse){
 		berror("key not in use");
 	}

@@ -52,7 +52,7 @@ statcmp(Stat*a, Stat*b) {
 		return 0;
 }
 
-Bool
+bool
 isdir(char*path) {
 	struct stat buf;
 	
@@ -455,13 +455,13 @@ add_slash(char*s)
 	}
 }
 
-Bool
+bool
 frame_isfull(Frame*f)
 {
 	return f->nlines == f->maxlines && f->lastlinefull;
 }
 
-Bool	utfHadNulls;
+bool	utfHadNulls;
 int	utftotext_unconverted;	/* bytes at the end which weren't converted */
 
 /* Convert UTF from s1 to s2 into runes, store them at r

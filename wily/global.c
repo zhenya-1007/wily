@@ -1,7 +1,7 @@
 #include "wily.h"
 
-Bool 	show_dot_files = false;
-Bool 	autoindent_enabled = true;
+bool 	show_dot_files = false;
+bool 	autoindent_enabled = true;
 
 /* cwd for wily process */
 Path		wilydir;

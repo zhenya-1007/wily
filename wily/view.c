@@ -13,7 +13,7 @@ static Rectangle nullrect = { {0,0}, {0,0}};
  * a character address.
  */
 void
-view_getdot(View *v, char*buf, Bool isLine) {
+view_getdot(View *v, char*buf, bool isLine) {
 	if(isLine) {
 		sprintf(buf, ":%d,.", text_linenumber(v->t, v->sel.p0));
 	} else {
@@ -39,7 +39,7 @@ view_expand(View *v, Range r, char *s) {
 
 /* Allocate and return a new View.  Doesn't attempt to draw it. */
 View*
-view_new(Font *f, Bool istag, Text *text, Tile *tile)
+view_new(Font *f, bool istag, Text *text, Tile *tile)
 {
 	View*v = NEW(View);
 	Bitmap*b = 0;
@@ -79,7 +79,7 @@ view_delete(View *v){
 	return 0;
 }
 
-Bool
+bool
 view_invariants(View*v)
 {
 	Range	r;
@@ -199,7 +199,7 @@ view_append(View *v, char *s, int n) {
  * the selection, otherwise we append to the selection
  */
 void
-view_pipe(View *v, Bool *first, char *s, int n)
+view_pipe(View *v, bool *first, char *s, int n)
 {
 	ulong	p0 = v->sel.p0;
 	Range	r;
@@ -237,7 +237,7 @@ view_setfont(View *v, char*arg)
  */
 
 void
-view_border(View *v, Bool set)
+view_border(View *v, bool set)
 {
 	Rectangle r;
 	
@@ -314,7 +314,7 @@ view_replace(View *v, Range r, Rstring s)
 {
 	Range	q = intersect(r, v->visible);	/* visible part of change */
 	int	len;
-	Bool	visible = ISVISIBLE(v);
+	bool	visible = ISVISIBLE(v);
 
 	/* view_invariants don't hold at present because
 	 * v->t->length has changed but v->sel hasn't

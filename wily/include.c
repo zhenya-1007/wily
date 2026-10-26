@@ -5,7 +5,7 @@
 #include "wily.h"
 
 static char *	pathfind (const char *paths, const char *file);
-static Bool	is_includebrackets(char left, char right);
+static bool	is_includebrackets(char left, char right);
 
 /*
  * The user has selected 'r' in 'v'.
@@ -46,7 +46,7 @@ openinclude(View *v, Range r) {
 	static functions
 **********************************************************/
 
-static Bool
+static bool
 is_includebrackets(char left, char right) {
 	return (left == '"' && right == '"') ||
 		(left == '<' && right == '>');

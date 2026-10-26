@@ -20,12 +20,12 @@ static Pair* pair;
 static int	npairs = 0;
 static int maxpairs = 0;
 
-static Bool
+static bool
 match(char *regex, char *s) {
 	/* Make a dummy text file, search in that */
 	static Text *t=0;
 	Range r;
-	Bool	retval;
+	bool	retval;
 	
 	if(!t)
 		t  = text_alloc(0, false);
@@ -57,7 +57,7 @@ addpair(char *regex, char* tools) {
 char*
 tag_match(char*label) {
 	int	j;
-	static Bool inprogress;
+	static bool inprogress;
 	
 	if(inprogress) {
 		j= npairs;

@@ -15,7 +15,7 @@
 static char * whitespace_regexp = "[ \t\n]+";
 static Range	tag_findtool(Text *, char*);
 
-static Bool		wily_modifying_tag = false;
+static bool		wily_modifying_tag = false;
 
 /************************************************
 	Gettools and Settools only used by the messaging interface.

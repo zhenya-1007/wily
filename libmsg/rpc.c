@@ -20,20 +20,20 @@ struct MsgQ {
 };
 
 static void	msgq_init	(MsgQ*);
-static Bool	msgq_empty	(MsgQ*);
-static Bool	msgq_full	(MsgQ*);
+static bool	msgq_empty	(MsgQ*);
+static bool	msgq_full	(MsgQ*);
 static Msg	msgq_pop	(MsgQ*);
 static void	msgq_push	(MsgQ*,Msg);
 
 struct MsgSet {
 	Msg	msg		[Qmax];
-	Bool	inuse	[Qmax];
+	bool	inuse	[Qmax];
 	int	n;
 };
 
 static void msgset_init	(MsgSet*);
-static Bool msgset_full	(MsgSet*);
-static Bool msgset_find	(MsgSet*, Id, Msg*);
+static bool msgset_full	(MsgSet*);
+static bool msgset_find	(MsgSet*, Id, Msg*);
 static void msgset_push	(MsgSet*,Msg);
 
 struct Handle {
@@ -83,7 +83,7 @@ rpc_fileno(Handle *h)
 	return h->fd;
 }
 
-Bool
+bool
 rpc_isconnected(Handle*h)
 {
 	return h->fd>=0;
@@ -97,7 +97,7 @@ rpc_freehandle(Handle*h)
 	free(h);
 }
 
-Bool
+bool
 rpc_wouldblock(Handle*h)
 {
 	return msgq_empty(&h->event);
@@ -194,7 +194,7 @@ rpc_read(Handle*h, Id w, Range r, char*buf)
 }
 
 char*
-rpc_goto(Handle*h, Id *w, Range*r, char*s, Bool setdot)
+rpc_goto(Handle*h, Id *w, Range*r, char*s, bool setdot)
 {
 	Msg	m;
 	char	*err;
@@ -408,13 +408,13 @@ msgq_init(MsgQ *q)
 	q->read= q->write = 0;
 }
 
-static Bool
+static bool
 msgq_full(MsgQ *q)
 {
 	return (q->write +1) % Qmax == q->read;
 }
 
-static Bool
+static bool
 msgq_empty(MsgQ *q)
 {
 	return q->write == q->read;
@@ -470,7 +470,7 @@ msgset_push(MsgSet *s, Msg m)
 	assert(false);
 }
 
-static Bool
+static bool
 msgset_find(MsgSet *s, Id m, Msg *msg)
 {
 	int	j;
@@ -488,7 +488,7 @@ msgset_find(MsgSet *s, Id m, Msg *msg)
 	return false;
 }
 
-static Bool
+static bool
 msgset_full(MsgSet*s)
 {
 	return s->n == Qmax;

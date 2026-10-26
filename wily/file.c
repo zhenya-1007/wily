@@ -22,11 +22,11 @@ static Data *	data_alloc		(void);
  * exist and we don't want to create it.
  */
 View*
-data_open(char*label, Bool create) {
+data_open(char*label, bool create) {
 	Data	*d;
 	Stat	buf;
 	Path	path;
-	Bool	failure;
+	bool	failure;
 	
 	label2path(path, label);
 
@@ -160,7 +160,7 @@ data_getdir(Data*d, char*label, char*path, Stat*buf) {
 static int
 data_getfile(Data*d, char*label, char*path, Stat*buf) {
 	int	fd;
-	extern Bool utfHadNulls;
+	extern bool utfHadNulls;
 	if((fd = open(path, O_RDONLY)) == -1) {
 		diag(path, "open [%s]", path);
 		return -1;	/* failure - modify nothing */

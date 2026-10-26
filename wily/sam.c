@@ -108,11 +108,11 @@ Strzero(String *s)
  * If we find a match, set r, and return true. Otherwise,
  * return false.
  */
-static Bool
-text_strregexp(Text *t,  String str, Range *r, Bool fwd)
+static bool
+text_strregexp(Text *t,  String str, Range *r, bool fwd)
 {
 	File f;
-	Bool found;
+	bool found;
 	ulong q0, q1;
 	/* We run into all sorts of setjmp/longjmp madness
 	 * if text_strregexp somehow calls itself.
@@ -120,7 +120,7 @@ text_strregexp(Text *t,  String str, Range *r, Bool fwd)
 	 * For this same reason, can't use diag anywhere
 	 * in sam.c or regexp.c, fprintf(stderr,...) instead.
 	 */
-	static Bool active = false;
+	static bool active = false;
 
 	assert(!active);
 	active = true;
@@ -154,8 +154,8 @@ out:
 	return found;
 }
 
-Bool
-text_utfregexp(Text *t, char *re, Range *r, Bool fwd)
+bool
+text_utfregexp(Text *t, char *re, Range *r, bool fwd)
 {
 	static String str;
 	int l = (1+strlen(re))*sizeof(Rune);
@@ -168,8 +168,8 @@ text_utfregexp(Text *t, char *re, Range *r, Bool fwd)
 	return text_strregexp(t, str, r, fwd);
 }
 
-Bool
-text_regexp(Text *t, Rstring re, Range *r, Bool fwd)
+bool
+text_regexp(Text *t, Rstring re, Range *r, bool fwd)
 {
 	static String str;
 	int l = (1+RSLEN(re))*sizeof(Rune);

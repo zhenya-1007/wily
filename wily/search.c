@@ -9,7 +9,7 @@ static char	*endword = "[^a-zA-Z0-9][^a-zA-Z0-9:.$|]*";
 static char	*startword = "[^a-zA-Z0-9]";
 static char 	*special = ".*+?(|)\\[]^$";
 
-static Bool	findend(Text *t, Range *r, char *addr, Range dot);
+static bool	findend(Text *t, Range *r, char *addr, Range dot);
 static Rstring	word(Rstring s);
 static Rstring	literal(Rstring s);
 static void	strip_re_slash(char *re);
@@ -18,7 +18,7 @@ static void	strip_re_slash(char *re);
  * If found, set '*r' and return true,
  * otherwise return false.
  */
-Bool
+bool
 text_look(Text*t, Range *r, Range dot) {
 	RPath	buf;
 	ulong	len;
@@ -34,11 +34,11 @@ text_look(Text*t, Range *r, Range dot) {
 	return text_findliteral(t, r, rstring(buf, buf + len));
 }
 
-Bool
+bool
 text_findliteralutf(Text*t, Range *r, char*lit)
 {
 	Rstring	s;
-	Bool	found;
+	bool	found;
 
 	s = utf2rstring(lit);
 	/* r->p0 = r->p1; */
@@ -48,11 +48,11 @@ text_findliteralutf(Text*t, Range *r, char*lit)
 	return found;
 }
 
-Bool
+bool
 text_findwordutf(Text*t, Range *r, char*lit)
 {
 	Rstring	s;
-	Bool	found;
+	bool	found;
 
 	s = utf2rstring(lit);
 	found = text_findword(t, r, s);
@@ -66,10 +66,10 @@ text_findwordutf(Text*t, Range *r, char*lit)
  * set 'r' to the location of the start of the string.  Otherwise,
  * return false.
  */
-Bool
+bool
 text_findliteral(Text *t, Range *r, Rstring s) {
 	Rstring	s2;
-	Bool		found;
+	bool		found;
 
 	s2 = literal(s);
 	found =  text_regexp(t, 	s2, r, 1);
@@ -77,10 +77,10 @@ text_findliteral(Text *t, Range *r, Rstring s) {
 	return found;
 }
 
-Bool
+bool
 text_findword(Text *t, Range *r, Rstring s) {
 	Rstring	s2;
-	Bool		found;
+	bool		found;
 
 	s2 = word(s);
 	found =  text_regexp(t, 	s2, r, 1);
@@ -93,7 +93,7 @@ text_findword(Text *t, Range *r, Rstring s) {
  * set 'r' to the range we found, and return true, otherwise return false.
  * 'addr' may be any Sam-style address.
  */
-Bool
+bool
 text_search(Text *t, Range *r, char *addr, Range dot)
 {
 	char	*addr2;
@@ -147,7 +147,7 @@ text_search(Text *t, Range *r, char *addr, Range dot)
  * never mind).  The address passed in here is not expected to contain
  * commas.
  */
-static Bool
+static bool
 findend(Text *t, Range *r, char *addr, Range dot) {
 	if(!strchr("/-#$.0123456789", *addr))
 		return false;

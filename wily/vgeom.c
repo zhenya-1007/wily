@@ -82,7 +82,7 @@ snapheight(View*v, int h) {
 void
 view_reshaped(View*v, Rectangle r) {
 	Frame	*f;
-	Bool	need_refresh = (Dx(r) != Dx(v->r));
+	bool	need_refresh = (Dx(r) != Dx(v->r));
 	
 	assert(view_invariants(v));
 

@@ -21,15 +21,15 @@ struct Undo {
 	ulong	alloced;		/* bytes alloced at s.p0 */
 };
 
-static Bool undoing = false;	/* prevent recording undo ops */
+static bool undoing = false;	/* prevent recording undo ops */
 static Range illegal_range = {10,1};
 
 static Undo *	reverse	(Text*, Range, Rstring);
-static Bool 	append	(Text*, Range r, Rstring s);
+static bool 	append	(Text*, Range r, Rstring s);
 static void 	reset	(Undo**);
 static void	save_state	(Text *);
 static void	update_state	(Text *);
-static Range	shift	(Text *, Undo **, Undo **, Bool );
+static Range	shift	(Text *, Undo **, Undo **, bool );
 
 static void
 text_rmtool(Text*t, char*s)	{
@@ -78,7 +78,7 @@ undo_record
  * Return the range that was inserted.
  */
 Range
-undo_undo(Text *t, Bool all)
+undo_undo(Text *t, bool all)
 {
 	Range r;
 	
@@ -97,7 +97,7 @@ undo_undo(Text *t, Bool all)
 
 /* The mirror of undo_undo */
 Range
-undo_redo(Text *t, Bool all)
+undo_redo(Text *t, bool all)
 {
 	Range r;
 	Undo *tmp;
@@ -166,7 +166,7 @@ undo_mark(Text*t)
 
 /* Are we at the same point in the history as we marked earlier?
  */
-Bool
+bool
 undo_atmark(Text*t)
 {
 	return t->mark == t->did;
@@ -175,15 +175,15 @@ undo_atmark(Text*t)
 /*********************************************************
 	INTERNAL STUFF
 *********************************************************/
-static void	tag		(Text *, Bool , Bool , char *);
-static Bool	undo_eq(Undo*u, Range r, Rstring s);
+static void	tag		(Text *, bool , bool , char *);
+static bool	undo_eq(Undo*u, Range r, Rstring s);
 
 /* 
  * We are about to replace the text at 'r' with 's'.  If we can record
  * the undo information for this by modifying t->undo, and/or t->undone,
  * do so, and return true.  Otherwise, return false.
  */
-static Bool
+static bool
 append(Text *t, Range r, Rstring s)
 {
 	Undo 	*u;
@@ -246,7 +246,7 @@ reset(Undo**head) {
  * 'undone'
  */
 static Undo	*did, *undone;
-static Bool	state_count = 0;
+static bool	state_count = 0;
 static void
 save_state(Text *t)
 {
@@ -275,7 +275,7 @@ update_state(Text *t)
  * Returns the range of any text inserted, or gibberish if !change_text
  */
 static Range
-shift(Text *t, Undo **from, Undo **to, Bool change_text)
+shift(Text *t, Undo **from, Undo **to, bool change_text)
 {
 	Range	r;
 	Undo	*u;
@@ -306,7 +306,7 @@ shift(Text *t, Undo **from, Undo **to, Bool change_text)
  * in all the tags associated with 't'
  */
 static void
-tag(Text *t, Bool before, Bool after, char *s)
+tag(Text *t, bool before, bool after, char *s)
 {
 	if(!before != !after)
 		(after? text_addtool : text_rmtool)(t,s);
@@ -328,7 +328,7 @@ rstrcmp(Rstring s1, Rstring s2)
 	return RSLEN(s1) - RSLEN(s2);
 }
 
-static Bool
+static bool
 undo_eq(Undo*u, Range r, Rstring s)
 {
 	return u && 

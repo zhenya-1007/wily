@@ -25,7 +25,7 @@ data_names(Data*d){
 }
 
 /* Return true if 'd' should have its resize box filled in */
-Bool
+bool
 data_isdirty(Data *d) {
 	return d && NEEDSBACKUP(d);
 }
@@ -66,7 +66,7 @@ data_put(Data *d, char *label) {
 	int		fd;
 	Stat		buf;
 	Path		path;
-	Bool		statfailed, writefailed;
+	bool		statfailed, writefailed;
 	
 	if(!label)
 		label = d->label;

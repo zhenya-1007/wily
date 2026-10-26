@@ -6,7 +6,7 @@
 #include "view.h"
 #include <ctype.h>
 
-static void		b2			(View *, Range, Bool);
+static void		b2			(View *, Range, bool);
 static void		dobutton		(View *, Mouse *);
 static void		doscroll		(View *, Mouse *);
 static void		action		(View *, Mouse *, Range, ulong);
@@ -71,7 +71,7 @@ dobutton(View *v, Mouse *orig) {
  * BUG: Doesn't check for leading whitespace which *is* removed in run().
  */
 static char *locals[] = {"Look", "Put", "Get", "Undo", "Redo", 0};
-static Bool
+static bool
 islocal(char *s) {
 	char	**ptr;
 
@@ -85,7 +85,7 @@ islocal(char *s) {
  * if we also clicked button 1.
  */
 static void
-b2(View *v, Range r, Bool ischord) {
+b2(View *v, Range r, bool ischord) {
 	char	*cmd,*arg;
 	View	*ls = last_selection;
 
@@ -172,7 +172,7 @@ doscroll(View *v, Mouse	*m ) {
 	ulong	timer;
 	ulong	type;
 	int		delay = DOUBLECLICK / SCROLLTIME;
-	Bool		firstmouse;
+	bool		firstmouse;
 	Event	e;
 
 	assert(ptinrect(m->xy, v->r));

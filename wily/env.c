@@ -16,8 +16,8 @@ struct Abbrev {
 static struct Abbrev *abbrev = 0;
 static int nabbrev = 0, maxabbrev = 0;
 
-static Bool	foundmatch	(char*dest, char*orig);
-static Bool	contract		(char*dest, char*orig);
+static bool	foundmatch	(char*dest, char*orig);
+static bool	contract		(char*dest, char*orig);
 static void	newenv		(char *env, Stat*buf);
 static Abbrev*	findstat		(Stat*buf);
 
@@ -51,7 +51,7 @@ pathcontract(char*dest, char *orig) {
 	static functions
 ******************************************************/
 
-static Bool
+static bool
 foundmatch(char*dest, char*orig){
 	Stat	buf;
 	Abbrev	*ab;
@@ -64,10 +64,10 @@ foundmatch(char*dest, char*orig){
 	}
 }
 
-static Bool
+static bool
 contract(char*dest, char*orig) {
 	char*lastslash;
-	Bool	retval;
+	bool	retval;
 	
 	if(foundmatch(dest, orig)) {
 		return true;

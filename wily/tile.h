@@ -11,7 +11,7 @@ struct Tile {
 	int	min,max;		/* starting and ending location */
 	int	base;		/* Minimum size of tile.  */
 	Ori	ori;			/* orientation of _our_ min and max */
-	Bool	ishidden;		/* is this tile currently hidden? */
+	bool	ishidden;		/* is this tile currently hidden? */
 	
 	Tile	*up, *down;	/* parent, child */
 	Tile	*left, *right;	/* siblings */
@@ -32,8 +32,8 @@ struct Tile {
 extern int tagheight;	/* height of a tag */
 extern Tile	*wily;
 
-Bool		tile_invariant(Tile *tile);
-Bool		list_invariant(Tile *list);
+bool		tile_invariant(Tile *tile);
+bool		list_invariant(Tile *list);
 View *	point2view(Point pt);
 void		tile_reshaped(Tile *t);
 Tile*		point2tile(Tile *tile, Point p);
@@ -60,5 +60,5 @@ int		adjust_sizes_in_range(Tile*start, Tile*end, int available);
 Tile*		tile_new(Ori, int, int, int, Tile*, Text *, Text*);
 int		tile_minsize(Tile*t);
 void		list_add(Tile *list, Tile *tile);
-Bool		list_oksizes(Tile*list);
-Bool		list_contains(Tile*start, Tile*end, Tile *want);
+bool		list_oksizes(Tile*list);
+bool		list_contains(Tile*start, Tile*end, Tile *want);

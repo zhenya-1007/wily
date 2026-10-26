@@ -3,8 +3,8 @@ extern char*filetools;
 extern char*dirtools;
 
 /* global.c */
-extern Bool show_dot_files;
-extern Bool autoindent_enabled;
+extern bool show_dot_files;
+extern bool autoindent_enabled;
 extern View *last_selection;
 extern View	*last_focus;
 extern char * notfilename, *notdoubleclick , *notcommand,

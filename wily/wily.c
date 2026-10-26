@@ -147,7 +147,7 @@ mainloop(void)
 {
 	ulong	type;
 	Event	e;
-	Bool	mouseaction=true;
+	bool	mouseaction=true;
 	Point	lastp={0,0};
 
 	while ((type = eread(~0, &e))) {

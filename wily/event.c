@@ -43,7 +43,7 @@ struct Key {
 	 * one for stdout, (with k->v set).
 	 */
 	View		*v;
-	Bool		first;
+	bool		first;
 
 	/*
 	** Runes with multibyte UTF codes must not be split across

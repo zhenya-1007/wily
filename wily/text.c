@@ -33,7 +33,7 @@ findnull(Rune*start, Rune*end)
 }
 #endif
 
-Bool
+bool
 text_invariants(Text *t)
 {
 #ifndef NDEBUG
@@ -175,7 +175,7 @@ text_copy(Text *t, Range r, Rune *buf)
 }
 
 Text *
-text_alloc(Data *d, Bool isbody)
+text_alloc(Data *d, bool isbody)
 {
 	Text	*t;
 

@@ -5,13 +5,13 @@
 #include "tile.h"
 
 /* Is the tile hidden? */
-Bool
+bool
 tile_hidden(Tile *t) {
 	/* We are hidden, or one of our ancestors is hidden */
 	return t->ishidden || (t->up && tile_hidden(t->up));
 }
 
-Bool
+bool
 tile_invariant(Tile *tile) {
 	int	size ,body,tag, diff;
 	Tile	*last;
@@ -55,7 +55,7 @@ tile_invariant(Tile *tile) {
 	return true;
 }
 
-Bool
+bool
 list_invariant(Tile *list) {
 	int	prev;
 	Tile	*t;

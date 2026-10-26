@@ -28,9 +28,9 @@ text_linenumber(Text *t, ulong p) {
  * and returns true.  Otherwise, fills 'r' with gibberish and returns
  * false.
  */
-Bool
+bool
 text_findline(Text *t, Range *r, ulong n) {
-	Bool	foundstart = false;
+	bool	foundstart = false;
 	int	c;
 
 	if (n==0)

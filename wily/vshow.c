@@ -6,7 +6,7 @@
 #include "view.h"
 
 void
-view_linesdown(View *v, int n, Bool down) {
+view_linesdown(View *v, int n, bool down) {
 	Mouse	m;
 	Rectangle	r;
 
@@ -21,7 +21,7 @@ view_linesdown(View *v, int n, Bool down) {
 }
 
 void
-view_pagedown(View *v, Bool down) {
+view_pagedown(View *v, bool down) {
 	Mouse	m;
 	Rectangle	r;
 
@@ -59,7 +59,7 @@ view_set(View*v, ulong n) {
 	assert(view_invariants(v));
 }
 
-static Bool
+static bool
 tag_isfull(Frame*f) {
 	Point	pt = frptofchar(f, f->nchars);
 	Point	max = f->r.max;
@@ -196,7 +196,7 @@ view_scroll(View *v, Mouse *m) {
 
 /* Scroll 'v' to the left or right a bit, if possible */
 void
-view_hscroll(View*v, Bool left) {
+view_hscroll(View*v, bool left) {
 	ulong	old = v->visible.p0;
 	assert(!v->scroll);
 

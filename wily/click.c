@@ -21,7 +21,7 @@ Rune		*right[]=	{ r1, r2, r3, 0};
 /* Return false if 'c' is obviously not an alphanumeric character,
  * or if it is in the stoplist.
  */
-static Bool
+static bool
 okchar(int c, char *stoplist) {
 	/*
 	 * Hard to get absolutely right.  Use what we know about ASCII

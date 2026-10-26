@@ -23,8 +23,8 @@ struct View {
 	Scroll		*scroll;	/* 0 for tag */
 	Tile			*tile;
 	View			*next;	/* list of views displaying same Data */
-	Bool			selecting;	/* we're busy dragging out a selection */
-	Bool			autoindent;	/* autoindent in this view? */
+	bool			selecting;	/* we're busy dragging out a selection */
+	bool			autoindent;	/* autoindent in this view? */
 };
 #define ISTAG(v) 	((v) && !(v)->scroll)
 #define ISBODY(v)	( (v) && (v)->scroll)

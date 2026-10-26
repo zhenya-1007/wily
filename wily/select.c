@@ -110,7 +110,7 @@ move(View *v, SelFn fn, Point pt, ulong p0, ulong p1) {
  * range.
  */
 static Range
-follow(View *v, ulong oldq, ulong p0, ulong p1, Bool selecting, Mouse *m)
+follow(View *v, ulong oldq, ulong p0, ulong p1, bool selecting, Mouse *m)
 {
 	ulong	buttons = m->buttons;
 	Frame	*f = &v->f;
@@ -165,7 +165,7 @@ Range
 vselect(View *v, Mouse *m)
 {
 	Frame	*f = &v->f;
-	Bool		selecting;	/* affects selection */
+	bool		selecting;	/* affects selection */
 	ulong	orig, p0, p1;
 	Range	sel;
 

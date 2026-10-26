@@ -1,9 +1,10 @@
 /* see ../Doc/C.html 
  */
 
+#include <stdbool.h>
+
 typedef struct Msg Msg;
 typedef int Id;		/* Window identifier */
-typedef enum Bool {false, true} Bool;
 typedef struct Range Range;
 
 /* name of environment variable */
@@ -86,7 +87,7 @@ extern Range	nr;		/* null range */
 
 Handle*	rpc_init		(int);
 int		rpc_fileno(Handle *h);
-Bool		rpc_isconnected(Handle*);
+bool		rpc_isconnected(Handle*);
 void		rpc_freehandle (Handle*);
 
 char*	rpc_list		(Handle*h, char **bufptr);
@@ -99,11 +100,11 @@ char*	rpc_gettools	(Handle*, Id, char **);
 char*	rpc_read		(Handle*, Id, Range, char*);
 char*	rpc_replace	(Handle*, Id, Range, char*);
 char*	rpc_exec		(Handle*, Id , char *);
-char*	rpc_goto		(Handle*, Id * , Range*, char*, Bool);
+char*	rpc_goto		(Handle*, Id * , Range*, char*, bool);
 
 int		rpc_event	(Handle*, Msg *);
 int		rpc_bounce	(Handle*, Msg *);
-Bool		rpc_wouldblock(Handle*);
+bool		rpc_wouldblock(Handle*);
 
 
 #define MAX(a,b)(((a)>(b))?(a):(b))

@@ -12,7 +12,7 @@ static char *	shell;
 
 static int		ex_run		(View*, char *);
 static int		pipe_views	(char**cmd, View**vout, View**vin);
-static int		openpipes	(int*out, int *err, Bool );
+static int		openpipes	(int*out, int *err, bool );
 static int		ex_parent	(int , int , char*, char*, View *, int );
 static void	ex_child		(int , int , char *, char *, View *);
 static void	history		(char *cmd);
@@ -175,7 +175,7 @@ pipe_views(char**cmd, View**vout, View**vin) {
  * we don't leave any open file descriptors.
  */
 static int
-openpipes(int*out, int *err, Bool is_pipe_operation){
+openpipes(int*out, int *err, bool is_pipe_operation){
 	if (pipe(err) < 0) {
 		diag(0, "pipe");
 		return -1;

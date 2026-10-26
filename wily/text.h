@@ -12,9 +12,9 @@ struct Text {
 	ulong	alloced,length;
 	Range	gap;			/* buffer gap */
 	Data		*data;		/* 0 for wilytag or columntag */
-	Bool		isbody;
+	bool		isbody;
 	View		*v;			/* list of views of this text */
-	Bool		needsbackup;	/* this text can become dirty */
+	bool		needsbackup;	/* this text can become dirty */
 
 	ulong	pos;			/* position for regexp search engine */
 

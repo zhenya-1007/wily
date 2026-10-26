@@ -43,7 +43,7 @@ struct Data {
 	Data 	*next;	
 	Path		label, cachedlabel;
 	/* Path		path;	*/
-	Bool		has_stat;
+	bool		has_stat;
 	Stat		stat;
 	char		*backupto;
 
@@ -64,7 +64,7 @@ struct Data {
 void		data_setbackup(Data *, char*);
 Data *	data_findid(Id );
 extern Data	*dataroot;
-Bool		data_senddestroy(Data *d);
+bool		data_senddestroy(Data *d);
 void		data_listremove(Data *d);
 
 /* dir.c */

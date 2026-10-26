@@ -8,7 +8,7 @@
 	Simple operations to apply to every visible tile in a list.
 ********************************************************/
 
-Bool
+bool
 list_oksizes(Tile*list) {
 	Tile*t;
 
@@ -116,7 +116,7 @@ next_visible(Tile*t) {
 }
 
 /* Return the next visible tile after 't' */
-Bool
+bool
 list_contains(Tile*start, Tile*end, Tile *want) {
 	Tile*t;
 	FOR_EACH_VISIBLE(start,end) {

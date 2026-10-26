@@ -14,7 +14,7 @@ static char *	data_list(void);
 static int		msg_send(Msg*m, int fd);
 static void	msg_new(Msg*m);
 static void	msg_fillfd(Msg*m, int fd);
-static Bool	msg_form_and_send(Mtype,  Id, Id, Range, ushort, char	*, int);
+static bool	msg_form_and_send(Mtype,  Id, Id, Range, ushort, char	*, int);
 static void	msg_process(Msg*m, int fd);
 static void	msg_error(Msg*m, char*s);
 
@@ -96,10 +96,10 @@ data_fdstop(int fd) {
  * send them one.  If we fail to send the message, or don't need
  * to send the message, return false.
  */
-Bool
+bool
 data_sendreplace(Data *d,Range r, Rstring s) {
 	char	*buf;
-	Bool	retval;
+	bool	retval;
 
 	if(! ( d && d->emask & WEreplace) )
 		return false;
@@ -112,7 +112,7 @@ data_sendreplace(Data *d,Range r, Rstring s) {
 }
 
 /* see data_sendreplace */
-Bool
+bool
 data_senddestroy(Data *d) {
 	if(! ( d && d->emask & WEdestroy) )
 		return false;
@@ -120,7 +120,7 @@ data_senddestroy(Data *d) {
 }
 
 /* see data_sendreplace */
-Bool
+bool
 data_sendgoto(Data *d,Range r, char *s) {
 	if(! ( d && d->emask & WEgoto) )
 		return false;
@@ -128,9 +128,9 @@ data_sendgoto(Data *d,Range r, char *s) {
 }
 
 /* see data_sendreplace */
-Bool
+bool
 data_sendexec(Data *d,char*cmd, char *arg) {
-	Bool	retval;
+	bool	retval;
 	char	*s;
 
 	if(! ( d && d->emask & WEexec) )
@@ -265,7 +265,7 @@ handlereplace(Msg*m, Text *t ) {
 
 static void
 handlegoto(Msg*m, View*v) {
-	Bool	show;
+	bool	show;
 	Range	r;
 	
 	show = (m->t == WEgoto) || m->flag;
@@ -336,7 +336,7 @@ msg_fillfd(Msg*m, int fd) {
 	}
 }
 
-static Bool
+static bool
 msg_form_and_send(Mtype t,  Id m, Id w, Range	r, ushort	flag, char	*s, int fd) {
 	Msg	msg;
 
@@ -353,7 +353,7 @@ msg_form_and_send(Mtype t,  Id m, Id w, Range	r, ushort	flag, char	*s, int fd) {
 /* Process a message which arrived on 'fd' */
 static void
 msg_process(Msg*m, int fd) {
-	Bool	isbounce;
+	bool	isbounce;
 
 	isbounce = m->t < WEfencepost;
 	
