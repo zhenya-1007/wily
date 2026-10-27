@@ -1,0 +1,11 @@
+*.o
+*.a
+*~
+/Makefile
+/config.cache
+/config.h
+/config.log
+/config.status
+/libXg/Makefile
+/wily/Makefile
+/wily/wily
