@@ -136,11 +136,15 @@ text_write(Text *t, char *fname) {
 int
 text_fd(Text *t, Range sel)
 {
-	char	*file = tmpnam(0);
+	char	*file = (char*)malloc(256);
 	int	fd = -1;
 	int	input = -1;
+	const char* tmp = "/tmp/wily.XXXXXX";
 
-	if ((fd = open(file, O_WRONLY|O_CREAT, 0600)) < 0) {
+	strlcpy(file, tmp, strlen(tmp)+1);
+	fd = mkstemp(file);
+
+	if (fd < 0) {
 		perror("open temp file");
 		goto fail;
 	}

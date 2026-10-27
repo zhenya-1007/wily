@@ -94,11 +94,12 @@ wilyfifotalk(void)
 int
 client_connect(void)
 {
-	int s , fd, size;
+	int s , fd, size, t;
 	struct sockaddr_un addr;
 	int	len;
 	int	nwritten;
 	char	*path;
+	const char* tmp = "/tmp/wily.XXXXXX";
 
 	/* create a socket */
 	if (! (s= socket(AF_UNIX, SOCK_STREAM, 0)))
@@ -106,7 +107,8 @@ client_connect(void)
 
 	/* bind it to a unix-domain at a temporary address */
 	addr.sun_family = AF_UNIX;
-	tmpnam(addr.sun_path);
+	strlcpy(addr.sun_path, tmp, strlen(tmp)+1);
+	t = mkstemp(addr.sun_path);
 	path = strdup(addr.sun_path);
 	len = strlen(addr.sun_path);
 
@@ -122,6 +124,7 @@ client_connect(void)
 		return -1;
 	nwritten = write(fd, addr.sun_path, len);
 	close(fd);
+	close(t);
 	if(nwritten !=len){
 		perror("write to wily");
 		return -1;
