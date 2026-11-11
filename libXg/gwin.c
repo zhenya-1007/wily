@@ -175,6 +175,22 @@ Mappingaction(Widget w, XEvent *e, String *p, Cardinal *np)
 		keypermod = modmap->max_keypermod;
 }
 
+static int
+modmap_contains(KeyCode k, int index) {
+	int offset, i;
+
+	if ( !modmap )
+		return -1;
+
+	offset = index * keypermod;
+	for (i = 0; i < keypermod; i++)
+		if ( modmap->modifiermap[offset + i] == k )
+			return 1;
+	return 0;
+}
+
+#define IS_MODIFIER(k, modifier_name) (modmap_contains(k, (modifier_name ## MapIndex)) > 0)
+
 #define STUFFCOMPOSE() \
 				f = ((GwinWidget)w)->gwin.gotchar; \
 				if (f) \
@@ -191,6 +207,44 @@ Keyaction(Widget w, XEvent *e, String *p, Cardinal *np)
 	KeySym k, mk, l, u;
 	Charfunc f;
 	Modifiers md;
+
+	if (e->xkey.state & Button1Mask) {
+		Gwinmouse m;
+		Mousefunc f;
+		unsigned s = e->xkey.state;
+		unsigned k = (KeyCode)e->xkey.keycode;
+
+		if (e->xany.type == KeyPress) {
+			if ( IS_MODIFIER(k, Control) ) {
+				s |= Button2Mask;
+				s &= ~ControlMask;
+			} else if ( IS_MODIFIER(k, Mod1) ) {
+				s |= Button3Mask;
+				s &= ~Mod1Mask;
+			} else if ( IS_MODIFIER(k, Shift) ) {
+				s |= Button3Mask;
+				s &= ~ShiftMask;
+			}
+		} else if (e->xany.type == KeyRelease) {
+			if (s & ControlMask && IS_MODIFIER(k, Control)) {
+				s &= ~(Button2Mask|ControlMask);
+			} else if (s & Mod1Mask && IS_MODIFIER(k, Mod1)) {
+				s &= ~(Button3Mask|Mod1Mask);
+			}  else if (s & Mod1Mask && IS_MODIFIER(k, Shift)) {
+				s &= ~(Button3Mask|ShiftMask);
+			}
+		} else
+		   return;
+
+		m.buttons = 0;
+		if(s & Button1Mask) m.buttons |= 1;
+		if(s & Button2Mask) m.buttons |= 2;
+		if(s & Button3Mask) m.buttons |= 4;
+		f = ((GwinWidget)w)->gwin.gotmouse;
+		if(f)
+			(*f)(&m);
+		return;
+	}
 
 	/*
 	 * I tried using XtGetActionKeysym, but it didn't seem to
@@ -372,7 +426,20 @@ Mouseaction(Widget w, XEvent *e, String *p, Cardinal *np)
 		m.msec = be->time;
 		s = be->state;	/* the previous state */
 		switch(be->button){
-		case 1:	s |= Button1Mask; break;
+		case 1:
+			if (s & ControlMask) {
+				s |= Button2Mask;
+				s &= ~Button1Mask;
+			} else if (s & Mod1Mask) {
+				s |= Button3Mask;
+				s &= ~Button1Mask;
+			} else if (s & ShiftMask) {
+				s |= Button3Mask;
+				s &= ~Button1Mask;
+			} else
+				s |= Button1Mask;
+			s &= ~(ControlMask|Mod1Mask|ShiftMask);
+			break;
 		case 2:	s |= Button2Mask; break;
 		case 3:	s |= Button3Mask; break;
 		}
@@ -384,7 +451,20 @@ Mouseaction(Widget w, XEvent *e, String *p, Cardinal *np)
 		m.msec = be->time;
 		s = be->state;
 		switch(be->button){
-		case 1:	s &= ~Button1Mask; break;
+		case 1:
+			if (s & ControlMask) {
+				s &= ~Button2Mask;
+				s &= ~Button1Mask;
+			} else if (s & Mod1Mask) {
+				s &= ~Button3Mask;
+				s &= ~Button1Mask;
+			} else if (s & ShiftMask) {
+				s &= ~Button3Mask;
+				s &= ~Button1Mask;
+			} else
+				s &= ~Button1Mask;
+			s &= ~(ControlMask|Mod1Mask|ShiftMask);
+			break;
 		case 2:	s &= ~Button2Mask; break;
 		case 3:	s &= ~Button3Mask; break;
 		}
@@ -392,6 +472,7 @@ Mouseaction(Widget w, XEvent *e, String *p, Cardinal *np)
 	case MotionNotify:
 		me = (XMotionEvent *)e;
 		s = me->state;
+		s &= ~(ControlMask|Mod1Mask|ShiftMask);
 		m.xy.x = me->x;
 		m.xy.y = me->y;
 		m.msec = me->time;
