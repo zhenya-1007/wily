@@ -65,6 +65,7 @@ static XtActionsRec actions[] = {
 
 static char tms[] =
 	"<Key> : key() \n\
+	<KeyUp> : key() \n\
 	<Motion> : mouse() \n\
 	<BtnDown> : mouse() \n\
 	<BtnUp> : mouse() \n\
@@ -119,6 +120,15 @@ WidgetClass gwinWidgetClass = (WidgetClass) &gwinClassRec;
 
 static XModifierKeymap *modmap;
 static int keypermod;
+
+/*
+ * Button emulation: button 1 pressed with Control held acts as button 2,
+ * with Mod1 (Alt) held as button 3.  Pressing Control or Mod1 while an
+ * unmodified button 1 is held adds button 2 or 3 to form a chord.
+ */
+static int b1 = 1;	/* button that button 1 currently stands for */
+static int chord;	/* button chorded with button 1 via a modifier key */
+static Gwinmouse mouse;	/* last mouse state sent to the application */
 
 static void
 Realize(Widget w, XtValueMask *valueMask, XSetWindowAttributes *attrs)
@@ -181,6 +191,68 @@ Mappingaction(Widget w, XEvent *e, String *p, Cardinal *np)
 					for (c = 0; c < composing; c++) \
 						(*f)(compose[c])
 
+/* The modifier mask (e.g. ControlMask) the keycode sets, or 0 */
+static unsigned int
+modmask(KeyCode kc)
+{
+	int i;
+
+	if (modmap)
+		for (i = 0; i < 8*keypermod; i++)
+			if (modmap->modifiermap[i] == kc)
+				return 1 << (i/keypermod);
+	return 0;
+}
+
+static int
+buttons(unsigned int s)
+{
+	int b = 0;
+
+	if(s & Button1Mask) b |= b1 | chord;
+	if(s & Button2Mask) b |= 2;
+	if(s & Button3Mask) b |= 4;
+	return b;
+}
+
+static void
+sendmouse(Widget w)
+{
+	Mousefunc f;
+
+	f = ((GwinWidget)w)->gwin.gotmouse;
+	if(f)
+		(*f)(&mouse);
+}
+
+/* Handle a modifier key chording with button 1; return 1 if consumed */
+static int
+chordkey(Widget w, XEvent *e)
+{
+	unsigned int mod;
+	int b;
+
+	if (!(e->xkey.state & Button1Mask) || b1 != 1)
+		return 0;
+	mod = modmask(e->xkey.keycode);
+	if (mod & ControlMask)
+		b = 2;
+	else if (mod & Mod1Mask)
+		b = 4;
+	else
+		return 0;
+	if (e->xany.type == KeyPress)
+		chord = b;
+	else if (chord == b)
+		chord = 0;
+	else
+		return 1;
+	mouse.buttons = buttons(e->xkey.state);
+	mouse.msec = e->xkey.time;
+	sendmouse(w);
+	return 1;
+}
+
 static void
 Keyaction(Widget w, XEvent *e, String *p, Cardinal *np)
 {
@@ -192,6 +264,8 @@ Keyaction(Widget w, XEvent *e, String *p, Cardinal *np)
 	Charfunc f;
 	Modifiers md;
 
+	if(chordkey(w, e))
+		return;
 	/*
 	 * I tried using XtGetActionKeysym, but it didn't seem to
 	 * do case conversion properly
@@ -361,30 +435,30 @@ Mouseaction(Widget w, XEvent *e, String *p, Cardinal *np)
 	int s;
 	XButtonEvent *be;
 	XMotionEvent *me;
-	Gwinmouse m;
-	Mousefunc f;
 
 	switch(e->type){
 	case ButtonPress:
 		be = (XButtonEvent *)e;
-		m.xy.x = be->x;
-		m.xy.y = be->y;
-		m.msec = be->time;
+		mouse.xy.x = be->x;
+		mouse.xy.y = be->y;
+		mouse.msec = be->time;
 		s = be->state;	/* the previous state */
 		switch(be->button){
-		case 1:	s |= Button1Mask; break;
+		case 1:	s |= Button1Mask;
+			b1 = (s & ControlMask) ? 2 : (s & Mod1Mask) ? 4 : 1;
+			break;
 		case 2:	s |= Button2Mask; break;
 		case 3:	s |= Button3Mask; break;
 		}
 		break;
 	case ButtonRelease:
 		be = (XButtonEvent *)e;
-		m.xy.x = be->x;
-		m.xy.y = be->y;
-		m.msec = be->time;
+		mouse.xy.x = be->x;
+		mouse.xy.y = be->y;
+		mouse.msec = be->time;
 		s = be->state;
 		switch(be->button){
-		case 1:	s &= ~Button1Mask; break;
+		case 1:	s &= ~Button1Mask; b1 = 1; chord = 0; break;
 		case 2:	s &= ~Button2Mask; break;
 		case 3:	s &= ~Button3Mask; break;
 		}
@@ -392,20 +466,15 @@ Mouseaction(Widget w, XEvent *e, String *p, Cardinal *np)
 	case MotionNotify:
 		me = (XMotionEvent *)e;
 		s = me->state;
-		m.xy.x = me->x;
-		m.xy.y = me->y;
-		m.msec = me->time;
+		mouse.xy.x = me->x;
+		mouse.xy.y = me->y;
+		mouse.msec = me->time;
 		break;
 	default:
 		return;
 	}
-	m.buttons = 0;
-	if(s & Button1Mask) m.buttons |= 1;
-	if(s & Button2Mask) m.buttons |= 2;
-	if(s & Button3Mask) m.buttons |= 4;
-	f = ((GwinWidget)w)->gwin.gotmouse;
-	if(f)
-		(*f)(&m);
+	mouse.buttons = buttons(s);
+	sendmouse(w);
 }
 
 static void
